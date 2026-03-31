@@ -1,10 +1,10 @@
 # Proposta de Projecto
 
-**Título:** Evidence Board  
-**Estudante:** Ana Santos  
-**Orientador:** Pedro Pestana  
-**Data:** Março 2026  
-**Versão:** 1.0  
+**Título:** Evidence Board
+**Estudante:** Ana Santos
+**Orientador:** Pedro Pestana
+**Data:** Março 2026
+**Versão:** 1.0
 
 ---
 
@@ -52,15 +52,15 @@ O sistema apresenta os nós e as suas ligações de forma estruturada.
 
 ## Esboço de arquitectura — C4 Nível 1
 
-Sistema: Evidence Board
+**Sistema:** Evidence Board
 
-**Utilizadores:**
+### Utilizadores
 
-Utilizador — Cria nós e estabelece ligações entre informação
+* Utilizador — Cria nós e estabelece ligações entre informação
 
-**Sistemas externos:**
+### Sistemas externos
 
-Não aplicável
+* Não aplicável
 
 ---
 
@@ -79,4 +79,3 @@ Não aplicável
 | Sem. 14    | 9–13 jun      | Ajustes finais                                        |                    |
 | Sem. 15    | 16–20 jun     | Preparação da defesa                                  | Prep. defesa       |
 | Sem. 16    | 24 jun        | Submissão do relatório final                          | Final (24 jun)     |
-
