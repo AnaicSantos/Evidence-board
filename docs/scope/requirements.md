@@ -1,7 +1,7 @@
 # Levantamento de Requisitos
 
 **Projecto:** Evidence Board  
-**Versão:** 1.0 · 31 Março 2026  
+**Versão:** 1.0 · 31 de Março 2026  
 **Referência MoSCoW:** https://www.productplan.com/glossary/moscow-prioritization/  
 
 ---
@@ -73,4 +73,4 @@
 
 | Versão | Data       | Alteração      | Razão                |
 | ------ | ---------- | -------------- | -------------------- |
-| 1.0    | 31 Março 2026 | Versão inicial | Proposta de projecto |
+| 1.0    | 31 de Março 2026 | Versão inicial | Proposta de projecto |
