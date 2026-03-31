@@ -11,10 +11,14 @@
 
 <ul id="nodeList"></ul>
 
-<script src="graph.js"></script>
+<script src="./graph.js"></script>
 
 <script>
-    const graph = new Graph();
+    let graph;
+
+    window.onload = function () {
+        graph = new Graph();
+    };
 
     function addNode() {
         const name = prompt("Nome do nó:");
