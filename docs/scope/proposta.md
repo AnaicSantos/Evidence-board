@@ -1,14 +1,10 @@
 # Proposta de Projecto
 
-**Título:** Evidence Board
-
-**Estudante:** Ana Santos
-
-**Orientador:** Pedro Pestana
-
-**Data:** Março 2026
-
-**Versão:** 1.0
+**Título:** Evidence Board  
+**Estudante:** Ana Santos  
+**Orientador:** Pedro Pestana  
+**Data:** Março 2026  
+**Versão:** 1.0  
 
 ---
 
@@ -30,15 +26,15 @@ O utilizador consegue adicionar nós ao sistema e estes ficam visíveis.
 
 ---
 
-**Funcionalidade 2 — Ligação entre nós**
-**Critério de aceitação:**
-O utilizador consegue criar ligações entre dois nós existentes.
+**Funcionalidade 2 — Ligação entre nós**  
+**Critério de aceitação:**  
+O utilizador consegue criar ligações entre dois nós existentes.  
 
 ---
 
-**Funcionalidade 3 — Visualização do grafo**
-**Critério de aceitação:**
-O sistema apresenta os nós e as suas ligações de forma estruturada.
+**Funcionalidade 3 — Visualização do grafo**  
+**Critério de aceitação:**  
+O sistema apresenta os nós e as suas ligações de forma estruturada.  
 
 ---
 
@@ -60,7 +56,7 @@ O sistema apresenta os nós e as suas ligações de forma estruturada.
 
 ### Utilizadores
 
-* Utilizador — Cria nós e estabelece ligações entre informação
+* Utilizador — Cria nós e estabelece ligações entre informação  
 
 ### Sistemas externos
 
