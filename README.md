@@ -53,7 +53,7 @@ Aplicação local (ficheiro HTML)
 
 ---
 
-## Decisões de arquitectura principais
+## Decisões de arquitectura principais  
 
 | Decisão                     | Alternativa considerada | Razão da escolha                             |
 | --------------------------- | ----------------------- | -------------------------------------------- |
@@ -78,4 +78,4 @@ Aplicação local (ficheiro HTML)
 
 ---
 
-*Última actualização: 31 de Março 2026*
+*Última atualização: 31 de Março 2026*
