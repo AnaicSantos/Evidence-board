@@ -1,51 +1,43 @@
-# ADR-001 — [Título curto da decisão]
+# ADR-001 — Escolha de tecnologias
 
-**Data:** [Data]  
-**Estado:** Proposto | Aceite | Substituído por ADR-XXX  
-**Decisores:** [Nome(s)]
+**Data:** 31 de Março de 2026  
+**Estado:** Aceite  
+**Decisores:** Ana Santos  
 
 ---
 
 ## Contexto
 
-<!-- Qual é o problema ou situação que requer uma decisão? -->
-<!-- Que forças estão em jogo? (técnicas, de negócio, de equipa) -->
+O projeto Evidence Board tem como objetivo desenvolver um MVP simples para organização de informação sob a forma de grafos.
 
-[Descrever o contexto que levou a esta decisão]
+É necessário escolher uma abordagem tecnológica que permita desenvolvimento rápido e com baixa complexidade.
 
 ---
 
 ## Decisão
 
-<!-- O que foi decidido, de forma afirmativa e directa. -->
-<!-- "Decidimos usar X" — não "Poderemos considerar X". -->
-
-[Descrever a decisão tomada]
+Utilizar HTML, CSS e JavaScript, sem backend.
 
 ---
 
 ## Alternativas consideradas
 
-<!-- Que outras opções foram avaliadas e porquê foram rejeitadas? -->
-
-| Alternativa | Razão de rejeição |
-|------------|------------------|
-| [Alternativa A] | [Porquê não] |
-| [Alternativa B] | [Porquê não] |
+| Alternativa                     | Razão de rejeição                               |
+| ------------------------------- | ----------------------------------------------- |
+| Utilizar framework (React, Vue) | Aumenta a complexidade para o âmbito do projeto |
+| Implementar backend             | Não necessário para o MVP                       |
 
 ---
 
 ## Consequências
 
-<!-- O que muda com esta decisão? -->
-<!-- Que novas obrigações cria? Que problemas resolve? Que problemas pode criar? -->
+### Positivas
 
-**Positivas:**
-- [Consequência positiva]
+* Desenvolvimento mais rápido
+* Menor complexidade
+* Fácil execução no browser
 
-**Negativas / trade-offs:**
-- [Trade-off aceite]
+### Negativas / trade-offs
 
----
-
-*Para criar um novo ADR: copiar este ficheiro, incrementar o número, preencher e actualizar o estado.*
+* Limitação na persistência de dados
+* Menor escalabilidade futura
