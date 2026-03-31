@@ -1,71 +1,76 @@
 # Levantamento de Requisitos
 
-**Projecto:** [Título]  
-**Versão:** 1.0 · [Data]  
+**Projecto:** Evidence Board
+**Versão:** 1.0 · 31 Março 2026
 **Referência MoSCoW:** https://www.productplan.com/glossary/moscow-prioritization/
 
 ---
 
 ## Método MoSCoW
 
-| Categoria | Significado |
-|-----------|------------|
-| **Must have** | Obrigatório. Sem isto o projecto não é entregável. |
-| **Should have** | Importante mas não crítico. Incluir se o tempo permitir. |
-| **Could have** | Desejável. Só se tudo o resto estiver concluído. |
-| **Won't have** | Explicitamente fora do âmbito desta versão. |
+| Categoria   | Significado                                              |
+| ----------- | -------------------------------------------------------- |
+| Must have   | Obrigatório. Sem isto o projecto não é entregável.       |
+| Should have | Importante mas não crítico. Incluir se o tempo permitir. |
+| Could have  | Desejável. Só se tudo o resto estiver concluído.         |
+| Won't have  | Explicitamente fora do âmbito desta versão.              |
 
 ---
 
 ## Requisitos funcionais
 
-<!-- O que o sistema faz. -->
-
 ### Must have
 
-- RF01 — [Descrição do requisito]
-- RF02 — [Descrição do requisito]
-- RF03 — [Descrição do requisito]
+* RF01 — O sistema deve permitir criar nós de informação
+* RF02 — O sistema deve permitir estabelecer ligações entre nós
+* RF03 — O sistema deve permitir visualizar os dados sob a forma de grafo
+
+---
 
 ### Should have
 
-- RF04 — [Descrição do requisito]
-- RF05 — [Descrição do requisito]
+* RF04 — O sistema deve permitir mover os nós (drag & drop)
+* RF05 — O sistema deve permitir guardar e recuperar dados localmente
+
+---
 
 ### Could have
 
-- RF06 — [Descrição do requisito]
+* RF06 — O sistema poderá permitir personalizar os nós (cores ou etiquetas)
+
+---
 
 ### Won't have (nesta versão)
 
-- RF07 — [Descrição do que está explicitamente fora do âmbito e porquê]
+* RF07 — Suporte a conteúdos multimédia (adiado por aumentar a complexidade do sistema)
 
 ---
 
 ## Requisitos não-funcionais
 
-<!-- Como o sistema se comporta: performance, segurança, usabilidade, escalabilidade. -->
-
 ### Must have
 
-- RNF01 — **Performance:** [ex: tempo de resposta < 2s para operações principais sob carga normal]
-- RNF02 — **Segurança:** [ex: autenticação obrigatória para acesso a dados de utilizadores; passwords com hash]
-- RNF03 — **Usabilidade:** [ex: interface utilizável sem formação prévia por utilizadores do perfil X]
+* RNF01 — Performance: tempo de resposta adequado para operações básicas em grafos pequenos
+* RNF02 — Usabilidade: interface simples e intuitiva para utilizadores sem formação técnica
+* RNF03 — Compatibilidade: execução em browser sem necessidade de instalação
+
+---
 
 ### Should have
 
-- RNF04 — **Escalabilidade:** [ex: arquitectura que suporte aumento de utilizadores sem refactoring major]
-- RNF05 — **Manutenibilidade:** [ex: código com cobertura de testes unitários nos módulos principais]
+* RNF04 — Manutenibilidade: código organizado e modular
+* RNF05 — Escalabilidade: estrutura preparada para futuras funcionalidades
+
+---
 
 ### Could have
 
-- RNF06 — [ex: suporte multilingue]
+* RNF06 — Interface visual mais avançada para melhor experiência do utilizador
 
 ---
 
 ## Histórico de alterações
 
-| Versão | Data | Alteração | Razão |
-|--------|------|-----------|-------|
-| 1.0 | [data] | Versão inicial | Proposta de projecto |
-| | | | |
+| Versão | Data       | Alteração      | Razão                |
+| ------ | ---------- | -------------- | -------------------- |
+| 1.0    | Março 2026 | Versão inicial | Proposta de projecto |
