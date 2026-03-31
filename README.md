@@ -3,8 +3,11 @@
 > Aplicação web interativa para organizar, ligar e visualizar informação em grafos, facilitando a compreensão de conhecimento complexo.
 
 **Estudante:** Ana Santos
+
 **Orientador:** Pedro Pestana
+
 **UC:** Projecto de Engenharia Informática · Universidade Aberta · 2025/26
+
 **Repositório:** https://github.com/AnaicSantos/Evidence-board
 
 ---
