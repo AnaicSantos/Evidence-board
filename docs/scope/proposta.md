@@ -24,9 +24,9 @@ O resultado esperado é uma aplicação funcional que permita criar e visualizar
 
 ## MVP — Definição e critérios de aceitação
 
-**Funcionalidade 1 — Criação de nós**
-**Critério de aceitação:**
-O utilizador consegue adicionar nós ao sistema e estes ficam visíveis.
+**Funcionalidade 1 — Criação de nós**  
+**Critério de aceitação:**  
+O utilizador consegue adicionar nós ao sistema e estes ficam visíveis.  
 
 ---
 
