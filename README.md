@@ -17,17 +17,17 @@
 
 ## O que está implementado
 
-* [x] Criação de nós — Permite adicionar elementos de informação ao sistema
-* [x] Ligação entre nós — Permite estabelecer relações entre diferentes elementos
-* [x] Visualização em grafo — Representação visual das ligações entre os dados
+* Criação de nós — Permite adicionar elementos de informação ao sistema
+* Ligação entre nós — Permite estabelecer relações entre diferentes elementos
+* Visualização em grafo — Representação visual das ligações entre os dados
 
 ---
 
 ## O que está pendente
 
-* [ ] Persistência de dados — Guardar informação de forma permanente
-* [ ] Melhorias na interface — Tornar a interação mais intuitiva e visual
-* [ ] Edição e remoção de nós — Permitir atualizar e eliminar informação
+* Persistência de dados — Guardar informação de forma permanente
+* Melhorias na interface — Tornar a interação mais intuitiva e visual
+* Edição e remoção de nós — Permitir atualizar e eliminar informação
 
 ---
 
@@ -35,7 +35,7 @@
 
 ### Pré-requisitos
 
-Projeto em fase inicial — sem requisitos definidos
+Projeto em fase inicial — sem requisitos definidos.
 
 ### Instalação
 
@@ -46,7 +46,7 @@ cd Evidence-board
 
 ### Execução
 
-Projeto ainda em desenvolvimento — execução não disponível
+Projeto ainda em desenvolvimento — execução não disponível.
 
 ### Acesso
 
