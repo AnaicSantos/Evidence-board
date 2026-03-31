@@ -73,4 +73,4 @@
 
 | Versão | Data       | Alteração      | Razão                |
 | ------ | ---------- | -------------- | -------------------- |
-| 1.0    | Março 2026 | Versão inicial | Proposta de projecto |
+| 1.0    | 31 Março 2026 | Versão inicial | Proposta de projecto |
