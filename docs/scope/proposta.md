@@ -1,10 +1,10 @@
 # Proposta de Projecto
 
-**Título:** Evidence Board
-**Estudante:** Ana Santos
-**Orientador:** Pedro Pestana
-**Data:** Março 2026
-**Versão:** 1.0
+**Título:** Evidence Board  
+**Estudante:** Ana Santos  
+**Orientador:** Pedro Pestana  
+**Data:** Março 2026  
+**Versão:** 1.0  
 
 ---
 
