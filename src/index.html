@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Evidence Board</title>
+</head>
+<body>
+
+<h1>Evidence Board</h1>
+
+<button onclick="addNode()">Adicionar Nó</button>
+
+<ul id="nodeList"></ul>
+
+<script src="graph.js"></script>
+
+<script>
+    const graph = new Graph();
+
+    function addNode() {
+        const name = prompt("Nome do nó:");
+        if (name) {
+            graph.addNode(name);
+            updateList();
+        }
+    }
+
+    function updateList() {
+        const list = document.getElementById("nodeList");
+        list.innerHTML = "";
+
+        for (let node in graph.nodes) {
+            const li = document.createElement("li");
+            li.textContent = node;
+            list.appendChild(li);
+        }
+    }
+</script>
+
+</body>
+</html>
