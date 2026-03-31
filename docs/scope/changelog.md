@@ -8,25 +8,25 @@
 
 ## Sem. 1 · 17–21 mar
 
-**Feito:** [O que foi concluído esta semana]  
-**Bloqueou:** [O que impediu progresso, ou "Nada"]  
-**Próxima semana:** [O que está planeado]
+**Feito:** Definição da ideia do projeto   
+**Bloqueou:** Nada   
+**Próxima semana:** Elaboração da proposta  
 
 ---
 
 ## Sem. 2 · 24–28 mar
 
-**Feito:**  
-**Bloqueou:**  
-**Próxima semana:**
+**Feito:**  Elaboração e submissão da proposta  
+**Bloqueou:**  Nenhum bloqueio relevante  
+**Próxima semana:** Levantamento de requisitos  
 
 ---
 
 ## Sem. 3 · 31 mar–4 abr
 
-**Feito:**  
-**Bloqueou:**  
-**Próxima semana:**
+**Feito:**  Levantamento de requisitos e estrutura inicial do repositório  
+**Bloqueou:**  Dúvidas iniciais sobre organização do projeto  
+**Próxima semana:** Definição da arquitetura  
 
 ---
 
@@ -34,7 +34,7 @@
 
 **Feito:**  
 **Bloqueou:**  
-**Próxima semana:**
+**Próxima semana:** Desenvolvimento inicial do sistema  
 
 ---
 
@@ -42,7 +42,7 @@
 
 **Feito:**  
 **Bloqueou:**  
-**Próxima semana:**
+**Próxima semana:** Implementação da estrutura de grafo  
 
 ---
 
@@ -50,7 +50,7 @@
 
 **Feito:**  
 **Bloqueou:**  
-**Próxima semana:**
+**Próxima semana:** Continuação do desenvolvimento  
 
 ---
 
@@ -58,7 +58,7 @@
 
 **Feito:**  
 **Bloqueou:**  
-**Próxima semana:**
+**Próxima semana:** Testes e melhorias  
 
 ---
 
@@ -66,7 +66,7 @@
 
 **Feito:**  
 **Bloqueou:**  
-**Próxima semana:**
+**Próxima semana:** Desenvolvimento da interface  
 
 ---
 
@@ -74,7 +74,7 @@
 
 **Feito:**  
 **Bloqueou:**  
-**Próxima semana:**
+**Próxima semana:** Continuação da interface  
 
 ---
 
@@ -82,7 +82,7 @@
 
 **Feito:**  
 **Bloqueou:**  
-**Próxima semana:**
+**Próxima semana:** Integração do sistema  
 
 ---
 
@@ -90,7 +90,7 @@
 
 **Feito:**  
 **Bloqueou:**  
-**Próxima semana:**
+**Próxima semana:** Ajustes e melhorias  
 
 ---
 
@@ -98,7 +98,7 @@
 
 **Feito:**  
 **Bloqueou:**  
-**Próxima semana:**
+**Próxima semana:** Testes finais  
 
 ---
 
@@ -106,7 +106,7 @@
 
 **Feito:**  
 **Bloqueou:**  
-**Próxima semana:**
+**Próxima semana:** Ajustes finais  
 
 ---
 
@@ -114,7 +114,7 @@
 
 **Feito:**  
 **Bloqueou:**  
-**Próxima semana:**
+**Próxima semana:** Preparação da defesa  
 
 ---
 
@@ -122,7 +122,7 @@
 
 **Feito:**  
 **Bloqueou:**  
-**Próxima semana:**
+**Próxima semana:** Revisão final  
 
 ---
 
