@@ -78,7 +78,7 @@ N/A
 
 | Ferramenta | Para que foi usada                              |
 | ---------- | ----------------------------------------------- |
-| ChatGPT    | Apoio na estruturação do projeto e documentação |
+
 
 ---
 
