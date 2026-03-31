@@ -1,36 +1,34 @@
 # Evidence Board
 
-> Aplicação web interativa para organizar, ligar e visualizar informação em grafos, facilitando a compreensão de conhecimento complexo.
+Aplicação web interativa para organizar, ligar e visualizar informação em grafos, facilitando a compreensão de conhecimento complexo.
 
-**Estudante:** Ana Santos
-
-**Orientador:** Pedro Pestana
-
-**UC:** Projecto de Engenharia Informática · Universidade Aberta · 2025/26
-
-**Repositório:** https://github.com/AnaicSantos/Evidence-board
+**Estudante:** Ana Santos  
+**Orientador:** Pedro Pestana  
+**UC:** Projecto de Engenharia Informática · Universidade Aberta · 2025/26  
+**Repositório:** https://github.com/AnaicSantos/Evidence-board  
 
 ---
 
-## Estado actual
+## Estado atual
 
-🟢 **Verde** — A correr conforme planeado.
+🟢 Verde — MVP inicial funcional (criação e visualização básica de nós)
 
 ---
 
 ## O que está implementado
 
-* Criação de nós — Permite adicionar elementos de informação ao sistema
-* Ligação entre nós — Permite estabelecer relações entre diferentes elementos
-* Visualização em grafo — Representação visual das ligações entre os dados
+* [x] Criação de nós — Permite adicionar elementos de informação ao sistema através da interface
+* [x] Visualização básica — Apresentação dos nós numa lista no ecrã
+* [ ] Ligação entre nós — Ainda não implementado
 
 ---
 
 ## O que está pendente
 
-* Persistência de dados — Guardar informação de forma permanente
-* Melhorias na interface — Tornar a interação mais intuitiva e visual
-* Edição e remoção de nós — Permitir atualizar e eliminar informação
+* [ ] Ligação entre nós — Estabelecer relações entre elementos
+* [ ] Persistência de dados — Guardar informação no browser (localStorage)
+* [ ] Melhorias na interface — Tornar a visualização mais intuitiva
+* [ ] Edição e remoção de nós — Permitir atualizar e eliminar informação
 
 ---
 
@@ -38,22 +36,20 @@
 
 ### Pré-requisitos
 
-Projeto em fase inicial — sem requisitos definidos.
+Browser web (ex: Google Chrome)
 
 ### Instalação
 
-```bash
 git clone https://github.com/AnaicSantos/Evidence-board
-cd Evidence-board
-```
+cd Evidence-board/src
 
 ### Execução
 
-Projeto ainda em desenvolvimento — execução não disponível.
+Abrir o ficheiro index.html num browser
 
 ### Acesso
 
-N/A
+Aplicação local (ficheiro HTML)
 
 ---
 
@@ -76,11 +72,10 @@ N/A
 
 ### Ferramentas de IA utilizadas
 
-| Ferramenta | Para que foi usada |
-|-----------|-------------------|
-| ChatGPT | Apoio na clarificação de ideias e estruturação da documentação |
-
+| Ferramenta | Para que foi usada                                             |
+| ---------- | -------------------------------------------------------------- |
+| ChatGPT    | Apoio na clarificação de ideias e estruturação da documentação |
 
 ---
 
-*Última actualização: Março 2026*
+*Última actualização: 31 de Março 2026*
