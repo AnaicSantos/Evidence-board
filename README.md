@@ -35,29 +35,22 @@
 
 ### Pré-requisitos
 
-```
 Projeto em fase inicial — sem requisitos definidos
-```
 
 ### Instalação
 
 ```bash
-# 1. Clonar o repositório
 git clone https://github.com/AnaicSantos/Evidence-board
 cd Evidence-board
 ```
 
 ### Execução
 
-```
 Projeto ainda em desenvolvimento — execução não disponível
-```
 
 ### Acesso
 
-```
 N/A
-```
 
 ---
 
@@ -87,4 +80,3 @@ N/A
 ---
 
 *Última actualização: Março 2026*
-
