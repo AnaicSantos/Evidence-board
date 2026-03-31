@@ -76,8 +76,9 @@ N/A
 
 ### Ferramentas de IA utilizadas
 
-| Ferramenta | Para que foi usada                              |
-| ---------- | ----------------------------------------------- |
+| Ferramenta | Para que foi usada |
+|-----------|-------------------|
+| ChatGPT | Apoio na clarificação de ideias e estruturação da documentação |
 
 
 ---
