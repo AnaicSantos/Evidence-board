@@ -40,7 +40,7 @@ Browser web (ex: Google Chrome)
 
 ### Instalação
 
-git clone https://github.com/AnaicSantos/Evidence-board
+git clone https://github.com/AnaicSantos/Evidence-board  
 cd Evidence-board/src
 
 ### Execução
