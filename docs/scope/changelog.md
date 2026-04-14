@@ -24,9 +24,21 @@
 
 ## Sem. 3 · 31 mar–4 abr
 
-**Feito:**  Levantamento de requisitos e estrutura inicial do repositório  
-**Bloqueou:**  Dúvidas iniciais sobre organização do projeto  
-**Próxima semana:** Definição da arquitetura  
+**Feito:**  
+- Levantamento de requisitos (MoSCoW)  
+- Organização do repositório GitHub  
+- Criação e melhoria do README  
+- Implementação inicial da estrutura de grafo em JavaScript  
+- Criação da interface básica (index.html)  
+- Implementação da funcionalidade de criação de nós  
+
+**Bloqueou:**  
+- Dúvidas iniciais sobre a organização do projeto  
+
+**Próxima semana:**  
+- Definição da arquitetura  
+- Implementação de ligações entre nós  
+- Melhorias na interface  
 
 ---
 
