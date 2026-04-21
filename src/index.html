@@ -8,6 +8,7 @@
 <h1>Evidence Board</h1>
 
 <button onclick="addNode()">Adicionar Nó</button>
+<button onclick="connectNodes()">Ligar Nós</button>
 
 <ul id="nodeList"></ul>
 
@@ -25,6 +26,16 @@
         if (name) {
             graph.addNode(name);
             updateList();
+        }
+    }
+
+    function connectNodes() {
+        const node1 = prompt("Primeiro nó:");
+        const node2 = prompt("Segundo nó:");
+
+        if (node1 && node2) {
+            graph.addEdge(node1, node2);
+            graph.display();
         }
     }
 
