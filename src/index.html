@@ -9,6 +9,7 @@
 
 <button onclick="addNode()">Adicionar Nó</button>
 <button onclick="connectNodes()">Ligar Nós</button>
+<button onclick="removeNode()">Remover Nó</button>
 
 <ul id="nodeList"></ul>
 
@@ -22,7 +23,7 @@
 
     window.onload = function () {
         graph = new Graph();
-        loadGraph(); // 👈 carregar dados guardados
+        loadGraph(); //  carregar dados guardados
     };
 
     function addNode() {
@@ -30,7 +31,7 @@
         if (name) {
             graph.addNode(name);
             updateList();
-            saveGraph(); // 👈 guardar
+            saveGraph(); //  guardar
         }
     }
 
@@ -42,7 +43,7 @@
             graph.addEdge(node1, node2);
             graph.display();
             updateEdges();
-            saveGraph(); // 👈 guardar
+            saveGraph(); //  guardar
         }
     }
 
@@ -83,6 +84,24 @@
             updateEdges();
         }
     }
+function removeNode() {
+    const node = prompt("Nome do nó a remover:");
+
+    if (node && graph.nodes[node]) {
+
+        // remover ligações a esse nó
+        for (let n in graph.nodes) {
+            graph.nodes[n] = graph.nodes[n].filter(connection => connection !== node);
+        }
+
+        // remover o nó
+        delete graph.nodes[node];
+
+        updateList();
+        updateEdges();
+        saveGraph();
+    }
+}
 </script>
 
 </body>
