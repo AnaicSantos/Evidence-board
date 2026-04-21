@@ -2,42 +2,142 @@
 <html>
 <head>
     <title>Evidence Board</title>
+
+<style>
+   body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #eef2f7, #dfe6ee);
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 18px;
+    margin: 6px;
+    border: none;
+    background: linear-gradient(135deg, #4CAF50, #2e7d32);
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #43a047, #1b5e20);
+}
+
+#boardContainer {
+    position: relative;
+    width: 100%;
+    height: 550px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+#linesCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+#nodeBoard {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 550px;
+    z-index: 1;
+}
+
+.node {
+    position: absolute;
+    background: linear-gradient(135deg, #fff9c4, #ffe082);
+    padding: 15px;
+    border-radius: 12px;
+    min-width: 90px;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    cursor: grab;
+    transition: transform 0.15s;
+}
+
+.node:hover {
+    transform: scale(1.08);
+}
+</style>
+
 </head>
+
 <body>
 
 <h1>Evidence Board</h1>
 
-<button onclick="addNode()">Adicionar Nó</button>
-<button onclick="connectNodes()">Ligar Nós</button>
-<button onclick="removeNode()">Remover Nó</button>
-<button onclick="editNode()">Editar Nó</button>
+<div class="buttons">
+    <button onclick="addNode()">Adicionar Nó</button>
+    <button onclick="connectNodes()">Ligar Nós</button>
+    <button onclick="removeNode()">Remover Nó</button>
+    <button onclick="editNode()">Editar Nó</button>
+</div>
 
-<ul id="nodeList"></ul>
-
-<h2>Ligações</h2>
-<ul id="edgeList"></ul>
+<div id="boardContainer">
+    <canvas id="linesCanvas"></canvas>
+    <div id="nodeBoard"></div>
+</div>
 
 <script src="./graph.js"></script>
 
 <script>
     let graph;
+    let positions = {};
+    let canvas, ctx;
 
     window.onload = function () {
         graph = new Graph();
+
+        canvas = document.getElementById("linesCanvas");
+        ctx = canvas.getContext("2d");
+
+        resizeCanvas();
+        window.addEventListener("resize", resizeCanvas);
+
         loadGraph();
     };
+
+    function resizeCanvas() {
+        const container = document.getElementById("boardContainer");
+        canvas.width = container.clientWidth;
+        canvas.height = container.clientHeight;
+        drawEdges();
+    }
 
     function addNode() {
         const name = prompt("Nome do nó:");
 
-        if (name) {
-
-            if (graph.nodes[name]) {
-                alert("Esse nó já existe!");
-                return;
-            }
-
+        if (name && !graph.nodes[name]) {
             graph.addNode(name);
+
+            positions[name] = {
+                x: Math.random() * 400,
+                y: Math.random() * 300
+            };
+
             updateList();
             saveGraph();
         }
@@ -47,59 +147,78 @@
         const node1 = prompt("Primeiro nó:");
         const node2 = prompt("Segundo nó:");
 
-        if (node1 && node2) {
-
-            if (!graph.nodes[node1] || !graph.nodes[node2]) {
-                alert("Um dos nós não existe!");
-                return;
-            }
-
-            if (node1 === node2) {
-                alert("Não podes ligar um nó a ele próprio!");
-                return;
-            }
-
+        if (node1 && node2 && graph.nodes[node1] && graph.nodes[node2]) {
             graph.addEdge(node1, node2);
-            updateEdges();
+            drawEdges();
             saveGraph();
         }
     }
 
     function updateList() {
-        const list = document.getElementById("nodeList");
-        list.innerHTML = "";
+        const board = document.getElementById("nodeBoard");
+        board.innerHTML = "";
 
         for (let node in graph.nodes) {
-            const li = document.createElement("li");
-            li.textContent = node;
-            list.appendChild(li);
+            const div = document.createElement("div");
+            div.className = "node";
+            div.textContent = node;
+
+            div.style.left = positions[node].x + "px";
+            div.style.top = positions[node].y + "px";
+
+            makeDraggable(div, node);
+
+            board.appendChild(div);
         }
+
+        drawEdges();
     }
 
-    function updateEdges() {
-        const list = document.getElementById("edgeList");
-        list.innerHTML = "";
+    function makeDraggable(element, nodeName) {
+        let offsetX, offsetY;
+
+        element.onmousedown = function (e) {
+            offsetX = e.clientX - element.offsetLeft;
+            offsetY = e.clientY - element.offsetTop;
+
+            document.onmousemove = function (e) {
+                const x = e.clientX - offsetX;
+                const y = e.clientY - offsetY;
+
+                element.style.left = x + "px";
+                element.style.top = y + "px";
+
+                positions[nodeName] = { x, y };
+
+                drawEdges();
+            };
+
+            document.onmouseup = function () {
+                document.onmousemove = null;
+                document.onmouseup = null;
+                saveGraph();
+            };
+        };
+    }
+
+    function drawEdges() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         for (let node in graph.nodes) {
             for (let connection of graph.nodes[node]) {
-                const li = document.createElement("li");
-                li.textContent = node + " -> " + connection;
-                list.appendChild(li);
+
+                const p1 = positions[node];
+                const p2 = positions[connection];
+
+                if (!p1 || !p2) continue;
+
+                ctx.beginPath();
+                ctx.moveTo(p1.x + 40, p1.y + 20);
+                ctx.lineTo(p2.x + 40, p2.y + 20);
+                ctx.strokeStyle = "#333";
+                ctx.lineWidth = 2;
+                ctx.stroke();
             }
-        }
-    }
-
-    function saveGraph() {
-        localStorage.setItem("graph", JSON.stringify(graph.nodes));
-    }
-
-    function loadGraph() {
-        const data = localStorage.getItem("graph");
-
-        if (data) {
-            graph.nodes = JSON.parse(data);
-            updateList();
-            updateEdges();
         }
     }
 
@@ -109,13 +228,14 @@
         if (node && graph.nodes[node]) {
 
             for (let n in graph.nodes) {
-                graph.nodes[n] = graph.nodes[n].filter(connection => connection !== node);
+                graph.nodes[n] = graph.nodes[n].filter(c => c !== node);
             }
 
+            delete positions[node];
             delete graph.nodes[node];
 
             updateList();
-            updateEdges();
+            drawEdges();
             saveGraph();
         }
     }
@@ -135,15 +255,42 @@
             delete graph.nodes[oldName];
 
             for (let node in graph.nodes) {
-                graph.nodes[node] = graph.nodes[node].map(connection =>
-                    connection === oldName ? newName : connection
+                graph.nodes[node] = graph.nodes[node].map(c =>
+                    c === oldName ? newName : c
                 );
             }
 
+            positions[newName] = positions[oldName];
+            delete positions[oldName];
+
             updateList();
-            updateEdges();
+            drawEdges();
             saveGraph();
         }
+    }
+
+    function saveGraph() {
+        localStorage.setItem("graph", JSON.stringify(graph.nodes));
+        localStorage.setItem("positions", JSON.stringify(positions));
+    }
+
+    function loadGraph() {
+        const data = localStorage.getItem("graph");
+        const pos = localStorage.getItem("positions");
+
+        if (data) graph.nodes = JSON.parse(data);
+        if (pos) positions = JSON.parse(pos);
+
+        for (let node in graph.nodes) {
+            if (!positions[node]) {
+                positions[node] = {
+                    x: Math.random() * 400,
+                    y: Math.random() * 300
+                };
+            }
+        }
+
+        updateList();
     }
 </script>
 
