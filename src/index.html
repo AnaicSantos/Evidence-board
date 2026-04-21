@@ -10,6 +10,7 @@
 <button onclick="addNode()">Adicionar Nó</button>
 <button onclick="connectNodes()">Ligar Nós</button>
 <button onclick="removeNode()">Remover Nó</button>
+<button onclick="editNode()">Editar Nó</button>
 
 <ul id="nodeList"></ul>
 
@@ -96,6 +97,30 @@ function removeNode() {
 
         // remover o nó
         delete graph.nodes[node];
+
+        updateList();
+        updateEdges();
+        saveGraph();
+    }
+}
+function editNode() {
+    const oldName = prompt("Nome atual do nó:");
+    const newName = prompt("Novo nome do nó:");
+
+    if (oldName && newName && graph.nodes[oldName]) {
+
+        // criar novo nó
+        graph.nodes[newName] = graph.nodes[oldName];
+
+        // remover antigo
+        delete graph.nodes[oldName];
+
+        // atualizar ligações
+        for (let node in graph.nodes) {
+            graph.nodes[node] = graph.nodes[node].map(connection => {
+                return connection === oldName ? newName : connection;
+            });
+        }
 
         updateList();
         updateEdges();
