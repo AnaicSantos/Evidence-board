@@ -11,6 +11,8 @@
 <button onclick="connectNodes()">Ligar Nós</button>
 
 <ul id="nodeList"></ul>
+<h2>Ligações</h2>
+<ul id="edgeList"></ul>
 
 <script src="./graph.js"></script>
 
@@ -30,14 +32,15 @@
     }
 
     function connectNodes() {
-        const node1 = prompt("Primeiro nó:");
-        const node2 = prompt("Segundo nó:");
+    const node1 = prompt("Primeiro nó:");
+    const node2 = prompt("Segundo nó:");
 
-        if (node1 && node2) {
-            graph.addEdge(node1, node2);
-            graph.display();
-        }
+    if (node1 && node2) {
+        graph.addEdge(node1, node2);
+        graph.display();
+        updateEdges(); 
     }
+}
 
     function updateList() {
         const list = document.getElementById("nodeList");
@@ -49,6 +52,19 @@
             list.appendChild(li);
         }
     }
+function updateEdges() {
+    const list = document.getElementById("edgeList");
+    list.innerHTML = "";
+
+    for (let node in graph.nodes) {
+        for (let connection of graph.nodes[node]) {
+            const li = document.createElement("li");
+            li.textContent = node + " -> " + connection;
+            list.appendChild(li);
+        }
+    }
+}
+
 </script>
 
 </body>
