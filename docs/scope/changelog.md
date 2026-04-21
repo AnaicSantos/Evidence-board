@@ -45,24 +45,49 @@
 ## Sem. 4 · 7–11 abr
 
 **Feito:**  
+- Início do desenvolvimento da interface web  
+- Criação da estrutura base em HTML  
+- Primeiros testes com interação do utilizador  
+
 **Bloqueou:**  
-**Próxima semana:** Desenvolvimento inicial do sistema  
+- Dificuldades na definição do layout ideal  
+
+**Próxima semana:**  
+- Melhorar interface  
+- Implementar funcionalidades de nós  
 
 ---
 
 ## Sem. 5 · 14–17 abr
 
 **Feito:**  
+- Implementação da criação de nós  
+- Visualização dos nós no ecrã  
+- Testes iniciais da funcionalidade  
+
 **Bloqueou:**  
-**Próxima semana:** Implementação da estrutura de grafo  
+- Dúvidas sobre a melhor forma de representar visualmente os dados  
+
+**Próxima semana:**  
+- Implementação de ligações entre nós  
+- Melhorias visuais  
 
 ---
 
-## Sem. 6 · 22–25 abr
+## Sem. 6 · 21 abr
 
 **Feito:**  
+- Implementação da ligação entre nós  
+- Adição de funcionalidades de remoção e edição  
+- Persistência de dados com localStorage  
+- Exploração de melhorias visuais (estilo quadro/post-it)  
+
 **Bloqueou:**  
-**Próxima semana:** Continuação do desenvolvimento  
+- Dificuldade em definir o melhor design visual para o projeto  
+
+**Próxima semana:**  
+- Refinar interface gráfica  
+- Melhorar experiência do utilizador 
 
 ---
 
