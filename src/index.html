@@ -11,6 +11,7 @@
 <button onclick="connectNodes()">Ligar Nós</button>
 
 <ul id="nodeList"></ul>
+
 <h2>Ligações</h2>
 <ul id="edgeList"></ul>
 
@@ -21,6 +22,7 @@
 
     window.onload = function () {
         graph = new Graph();
+        loadGraph(); // 👈 carregar dados guardados
     };
 
     function addNode() {
@@ -28,19 +30,21 @@
         if (name) {
             graph.addNode(name);
             updateList();
+            saveGraph(); // 👈 guardar
         }
     }
 
     function connectNodes() {
-    const node1 = prompt("Primeiro nó:");
-    const node2 = prompt("Segundo nó:");
+        const node1 = prompt("Primeiro nó:");
+        const node2 = prompt("Segundo nó:");
 
-    if (node1 && node2) {
-        graph.addEdge(node1, node2);
-        graph.display();
-        updateEdges(); 
+        if (node1 && node2) {
+            graph.addEdge(node1, node2);
+            graph.display();
+            updateEdges();
+            saveGraph(); // 👈 guardar
+        }
     }
-}
 
     function updateList() {
         const list = document.getElementById("nodeList");
@@ -52,19 +56,33 @@
             list.appendChild(li);
         }
     }
-function updateEdges() {
-    const list = document.getElementById("edgeList");
-    list.innerHTML = "";
 
-    for (let node in graph.nodes) {
-        for (let connection of graph.nodes[node]) {
-            const li = document.createElement("li");
-            li.textContent = node + " -> " + connection;
-            list.appendChild(li);
+    function updateEdges() {
+        const list = document.getElementById("edgeList");
+        list.innerHTML = "";
+
+        for (let node in graph.nodes) {
+            for (let connection of graph.nodes[node]) {
+                const li = document.createElement("li");
+                li.textContent = node + " -> " + connection;
+                list.appendChild(li);
+            }
         }
     }
-}
 
+    function saveGraph() {
+        localStorage.setItem("graph", JSON.stringify(graph.nodes));
+    }
+
+    function loadGraph() {
+        const data = localStorage.getItem("graph");
+
+        if (data) {
+            graph.nodes = JSON.parse(data);
+            updateList();
+            updateEdges();
+        }
+    }
 </script>
 
 </body>
