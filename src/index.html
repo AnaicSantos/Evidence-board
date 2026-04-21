@@ -4,7 +4,7 @@
     <title>Evidence Board</title>
 
 <style>
-   body {
+body {
     font-family: "Segoe UI", Arial, sans-serif;
     background: linear-gradient(135deg, #eef2f7, #dfe6ee);
     margin: 0;
@@ -14,7 +14,6 @@
 h1 {
     text-align: center;
     color: #2c3e50;
-    margin-bottom: 20px;
 }
 
 .buttons {
@@ -31,22 +30,19 @@ button {
     border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
-    transition: 0.2s;
 }
 
 button:hover {
     transform: scale(1.05);
-    background: linear-gradient(135deg, #43a047, #1b5e20);
 }
 
 #boardContainer {
     position: relative;
     width: 100%;
     height: 550px;
-    background: #ffffff;
+    background: white;
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    overflow: hidden;
 }
 
 #linesCanvas {
@@ -58,8 +54,6 @@ button:hover {
 
 #nodeBoard {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 550px;
     z-index: 1;
@@ -75,11 +69,12 @@ button:hover {
     font-weight: bold;
     box-shadow: 0 6px 15px rgba(0,0,0,0.2);
     cursor: grab;
-    transition: transform 0.15s;
 }
 
-.node:hover {
-    transform: scale(1.08);
+.node button {
+    padding: 3px 6px;
+    margin: 2px;
+    font-size: 12px;
 }
 </style>
 
@@ -92,8 +87,6 @@ button:hover {
 <div class="buttons">
     <button onclick="addNode()">Adicionar Nó</button>
     <button onclick="connectNodes()">Ligar Nós</button>
-    <button onclick="removeNode()">Remover Nó</button>
-    <button onclick="editNode()">Editar Nó</button>
 </div>
 
 <div id="boardContainer">
@@ -104,194 +97,213 @@ button:hover {
 <script src="./graph.js"></script>
 
 <script>
-    let graph;
-    let positions = {};
-    let canvas, ctx;
+let graph;
+let positions = {};
+let canvas, ctx;
 
-    window.onload = function () {
-        graph = new Graph();
+window.onload = function () {
+    graph = new Graph();
 
-        canvas = document.getElementById("linesCanvas");
-        ctx = canvas.getContext("2d");
+    canvas = document.getElementById("linesCanvas");
+    ctx = canvas.getContext("2d");
 
-        resizeCanvas();
-        window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
-        loadGraph();
-    };
+    loadGraph();
+};
 
-    function resizeCanvas() {
-        const container = document.getElementById("boardContainer");
-        canvas.width = container.clientWidth;
-        canvas.height = container.clientHeight;
+function resizeCanvas() {
+    const container = document.getElementById("boardContainer");
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
+    drawEdges();
+}
+
+function addNode() {
+    const name = prompt("Nome do nó:");
+
+    if (name && !graph.nodes[name]) {
+        graph.addNode(name);
+
+        positions[name] = {
+            x: Math.random() * 400,
+            y: Math.random() * 300
+        };
+
+        updateList();
+        saveGraph();
+    }
+}
+
+function connectNodes() {
+    const node1 = prompt("Primeiro nó:");
+    const node2 = prompt("Segundo nó:");
+
+    if (node1 && node2 && graph.nodes[node1] && graph.nodes[node2]) {
+        graph.addEdge(node1, node2);
         drawEdges();
+        saveGraph();
+    }
+}
+
+function updateList() {
+    const board = document.getElementById("nodeBoard");
+    board.innerHTML = "";
+
+    for (let node in graph.nodes) {
+
+        const div = document.createElement("div");
+        div.className = "node";
+
+        const label = document.createElement("div");
+        label.textContent = node;
+
+        const actions = document.createElement("div");
+        actions.style.display = "none";
+
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "✏️";
+        editBtn.onclick = (e) => {
+            e.stopPropagation();
+            editNodeDirect(node);
+        };
+
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "❌";
+        removeBtn.onclick = (e) => {
+            e.stopPropagation();
+            removeNodeDirect(node);
+        };
+
+        actions.appendChild(editBtn);
+        actions.appendChild(removeBtn);
+
+        div.appendChild(label);
+        div.appendChild(actions);
+
+        div.style.left = positions[node].x + "px";
+        div.style.top = positions[node].y + "px";
+
+        // mostrar/esconder botões
+        div.onclick = () => {
+            actions.style.display =
+                actions.style.display === "none" ? "block" : "none";
+        };
+
+        makeDraggable(div, node);
+        board.appendChild(div);
     }
 
-    function addNode() {
-        const name = prompt("Nome do nó:");
+    drawEdges();
+}
 
-        if (name && !graph.nodes[name]) {
-            graph.addNode(name);
+function makeDraggable(element, nodeName) {
+    let offsetX, offsetY;
 
-            positions[name] = {
+    element.onmousedown = function (e) {
+        offsetX = e.clientX - element.offsetLeft;
+        offsetY = e.clientY - element.offsetTop;
+
+        document.onmousemove = function (e) {
+            const x = e.clientX - offsetX;
+            const y = e.clientY - offsetY;
+
+            element.style.left = x + "px";
+            element.style.top = y + "px";
+
+            positions[nodeName] = { x, y };
+            drawEdges();
+        };
+
+        document.onmouseup = function () {
+            document.onmousemove = null;
+            document.onmouseup = null;
+            saveGraph();
+        };
+    };
+}
+
+function drawEdges() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let node in graph.nodes) {
+        for (let connection of graph.nodes[node]) {
+
+            const p1 = positions[node];
+            const p2 = positions[connection];
+
+            if (!p1 || !p2) continue;
+
+            ctx.beginPath();
+            ctx.moveTo(p1.x + 40, p1.y + 20);
+            ctx.lineTo(p2.x + 40, p2.y + 20);
+            ctx.strokeStyle = "#333";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+    }
+}
+
+function removeNodeDirect(node) {
+    for (let n in graph.nodes) {
+        graph.nodes[n] = graph.nodes[n].filter(c => c !== node);
+    }
+
+    delete positions[node];
+    delete graph.nodes[node];
+
+    updateList();
+    drawEdges();
+    saveGraph();
+}
+
+function editNodeDirect(oldName) {
+    const newName = prompt("Novo nome:");
+
+    if (newName && !graph.nodes[newName]) {
+
+        graph.nodes[newName] = graph.nodes[oldName];
+        delete graph.nodes[oldName];
+
+        for (let node in graph.nodes) {
+            graph.nodes[node] = graph.nodes[node].map(c =>
+                c === oldName ? newName : c
+            );
+        }
+
+        positions[newName] = positions[oldName];
+        delete positions[oldName];
+
+        updateList();
+        drawEdges();
+        saveGraph();
+    }
+}
+
+function saveGraph() {
+    localStorage.setItem("graph", JSON.stringify(graph.nodes));
+    localStorage.setItem("positions", JSON.stringify(positions));
+}
+
+function loadGraph() {
+    const data = localStorage.getItem("graph");
+    const pos = localStorage.getItem("positions");
+
+    if (data) graph.nodes = JSON.parse(data);
+    if (pos) positions = JSON.parse(pos);
+
+    for (let node in graph.nodes) {
+        if (!positions[node]) {
+            positions[node] = {
                 x: Math.random() * 400,
                 y: Math.random() * 300
             };
-
-            updateList();
-            saveGraph();
         }
     }
 
-    function connectNodes() {
-        const node1 = prompt("Primeiro nó:");
-        const node2 = prompt("Segundo nó:");
-
-        if (node1 && node2 && graph.nodes[node1] && graph.nodes[node2]) {
-            graph.addEdge(node1, node2);
-            drawEdges();
-            saveGraph();
-        }
-    }
-
-    function updateList() {
-        const board = document.getElementById("nodeBoard");
-        board.innerHTML = "";
-
-        for (let node in graph.nodes) {
-            const div = document.createElement("div");
-            div.className = "node";
-            div.textContent = node;
-
-            div.style.left = positions[node].x + "px";
-            div.style.top = positions[node].y + "px";
-
-            makeDraggable(div, node);
-
-            board.appendChild(div);
-        }
-
-        drawEdges();
-    }
-
-    function makeDraggable(element, nodeName) {
-        let offsetX, offsetY;
-
-        element.onmousedown = function (e) {
-            offsetX = e.clientX - element.offsetLeft;
-            offsetY = e.clientY - element.offsetTop;
-
-            document.onmousemove = function (e) {
-                const x = e.clientX - offsetX;
-                const y = e.clientY - offsetY;
-
-                element.style.left = x + "px";
-                element.style.top = y + "px";
-
-                positions[nodeName] = { x, y };
-
-                drawEdges();
-            };
-
-            document.onmouseup = function () {
-                document.onmousemove = null;
-                document.onmouseup = null;
-                saveGraph();
-            };
-        };
-    }
-
-    function drawEdges() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        for (let node in graph.nodes) {
-            for (let connection of graph.nodes[node]) {
-
-                const p1 = positions[node];
-                const p2 = positions[connection];
-
-                if (!p1 || !p2) continue;
-
-                ctx.beginPath();
-                ctx.moveTo(p1.x + 40, p1.y + 20);
-                ctx.lineTo(p2.x + 40, p2.y + 20);
-                ctx.strokeStyle = "#333";
-                ctx.lineWidth = 2;
-                ctx.stroke();
-            }
-        }
-    }
-
-    function removeNode() {
-        const node = prompt("Nome do nó a remover:");
-
-        if (node && graph.nodes[node]) {
-
-            for (let n in graph.nodes) {
-                graph.nodes[n] = graph.nodes[n].filter(c => c !== node);
-            }
-
-            delete positions[node];
-            delete graph.nodes[node];
-
-            updateList();
-            drawEdges();
-            saveGraph();
-        }
-    }
-
-    function editNode() {
-        const oldName = prompt("Nome atual do nó:");
-        const newName = prompt("Novo nome do nó:");
-
-        if (oldName && newName && graph.nodes[oldName]) {
-
-            if (graph.nodes[newName]) {
-                alert("Já existe um nó com esse nome!");
-                return;
-            }
-
-            graph.nodes[newName] = graph.nodes[oldName];
-            delete graph.nodes[oldName];
-
-            for (let node in graph.nodes) {
-                graph.nodes[node] = graph.nodes[node].map(c =>
-                    c === oldName ? newName : c
-                );
-            }
-
-            positions[newName] = positions[oldName];
-            delete positions[oldName];
-
-            updateList();
-            drawEdges();
-            saveGraph();
-        }
-    }
-
-    function saveGraph() {
-        localStorage.setItem("graph", JSON.stringify(graph.nodes));
-        localStorage.setItem("positions", JSON.stringify(positions));
-    }
-
-    function loadGraph() {
-        const data = localStorage.getItem("graph");
-        const pos = localStorage.getItem("positions");
-
-        if (data) graph.nodes = JSON.parse(data);
-        if (pos) positions = JSON.parse(pos);
-
-        for (let node in graph.nodes) {
-            if (!positions[node]) {
-                positions[node] = {
-                    x: Math.random() * 400,
-                    y: Math.random() * 300
-                };
-            }
-        }
-
-        updateList();
-    }
+    updateList();
+}
 </script>
 
 </body>
