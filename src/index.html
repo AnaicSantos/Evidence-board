@@ -24,15 +24,22 @@
 
     window.onload = function () {
         graph = new Graph();
-        loadGraph(); //  carregar dados guardados
+        loadGraph();
     };
 
     function addNode() {
         const name = prompt("Nome do nó:");
+
         if (name) {
+
+            if (graph.nodes[name]) {
+                alert("Esse nó já existe!");
+                return;
+            }
+
             graph.addNode(name);
             updateList();
-            saveGraph(); //  guardar
+            saveGraph();
         }
     }
 
@@ -41,10 +48,20 @@
         const node2 = prompt("Segundo nó:");
 
         if (node1 && node2) {
+
+            if (!graph.nodes[node1] || !graph.nodes[node2]) {
+                alert("Um dos nós não existe!");
+                return;
+            }
+
+            if (node1 === node2) {
+                alert("Não podes ligar um nó a ele próprio!");
+                return;
+            }
+
             graph.addEdge(node1, node2);
-            graph.display();
             updateEdges();
-            saveGraph(); //  guardar
+            saveGraph();
         }
     }
 
@@ -85,48 +102,49 @@
             updateEdges();
         }
     }
-function removeNode() {
-    const node = prompt("Nome do nó a remover:");
 
-    if (node && graph.nodes[node]) {
+    function removeNode() {
+        const node = prompt("Nome do nó a remover:");
 
-        // remover ligações a esse nó
-        for (let n in graph.nodes) {
-            graph.nodes[n] = graph.nodes[n].filter(connection => connection !== node);
+        if (node && graph.nodes[node]) {
+
+            for (let n in graph.nodes) {
+                graph.nodes[n] = graph.nodes[n].filter(connection => connection !== node);
+            }
+
+            delete graph.nodes[node];
+
+            updateList();
+            updateEdges();
+            saveGraph();
         }
-
-        // remover o nó
-        delete graph.nodes[node];
-
-        updateList();
-        updateEdges();
-        saveGraph();
     }
-}
-function editNode() {
-    const oldName = prompt("Nome atual do nó:");
-    const newName = prompt("Novo nome do nó:");
 
-    if (oldName && newName && graph.nodes[oldName]) {
+    function editNode() {
+        const oldName = prompt("Nome atual do nó:");
+        const newName = prompt("Novo nome do nó:");
 
-        // criar novo nó
-        graph.nodes[newName] = graph.nodes[oldName];
+        if (oldName && newName && graph.nodes[oldName]) {
 
-        // remover antigo
-        delete graph.nodes[oldName];
+            if (graph.nodes[newName]) {
+                alert("Já existe um nó com esse nome!");
+                return;
+            }
 
-        // atualizar ligações
-        for (let node in graph.nodes) {
-            graph.nodes[node] = graph.nodes[node].map(connection => {
-                return connection === oldName ? newName : connection;
-            });
+            graph.nodes[newName] = graph.nodes[oldName];
+            delete graph.nodes[oldName];
+
+            for (let node in graph.nodes) {
+                graph.nodes[node] = graph.nodes[node].map(connection =>
+                    connection === oldName ? newName : connection
+                );
+            }
+
+            updateList();
+            updateEdges();
+            saveGraph();
         }
-
-        updateList();
-        updateEdges();
-        saveGraph();
     }
-}
 </script>
 
 </body>
