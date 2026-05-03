@@ -3,306 +3,241 @@
 <head>
     <title>Evidence Board</title>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
 <style>
 body {
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: "Segoe UI", sans-serif;
     background: linear-gradient(135deg, #eef2f7, #dfe6ee);
     margin: 0;
-    padding: 20px;
 }
 
 h1 {
     text-align: center;
-    color: #2c3e50;
+    margin: 20px;
 }
 
-.buttons {
-    text-align: center;
-    margin-bottom: 20px;
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    left: 20px;
+    top: 120px;
+    background: white;
+    padding: 12px;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
 }
 
-button {
-    padding: 10px 18px;
-    margin: 6px;
+.sidebar button {
+    margin: 6px 0;
+    padding: 12px;
     border: none;
-    background: linear-gradient(135deg, #4CAF50, #2e7d32);
-    color: white;
+    background: #f1f5f9;
     border-radius: 10px;
     cursor: pointer;
-    font-weight: bold;
 }
 
-button:hover {
-    transform: scale(1.05);
+.sidebar button.active {
+    background: #6366f1;
+    color: white;
 }
 
-#boardContainer {
-    position: relative;
-    width: 100%;
-    height: 550px;
+/* BOARD */
+#board {
+    width: 95%;
+    height: 600px;
+    margin: auto;
     background: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-radius: 16px;
+    position: relative;
 }
 
-#linesCanvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
-}
-
-#nodeBoard {
+/* CANVAS */
+#canvas {
     position: absolute;
     width: 100%;
-    height: 550px;
-    z-index: 1;
+    height: 100%;
 }
 
+/* NODE */
 .node {
     position: absolute;
-    background: linear-gradient(135deg, #fff9c4, #ffe082);
-    padding: 15px;
+    background: linear-gradient(145deg, #fde68a, #facc15);
+    padding: 12px;
     border-radius: 12px;
-    min-width: 90px;
+    min-width: 100px;
     text-align: center;
-    font-weight: bold;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
     cursor: grab;
-}
-
-.node button {
-    padding: 3px 6px;
-    margin: 2px;
-    font-size: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 </style>
-
 </head>
 
 <body>
 
 <h1>Evidence Board</h1>
 
-<div class="buttons">
-    <button onclick="addNode()">Adicionar Nó</button>
-    <button onclick="connectNodes()">Ligar Nós</button>
+<div class="sidebar">
+    <button onclick="setMode('select')" id="btnSelect"><i class="fa-solid fa-arrow-pointer"></i></button>
+    <button onclick="setMode('line')" id="btnLine"><i class="fa-solid fa-diagram-project"></i></button>
+    <button onclick="setMode('node')" id="btnNode"><i class="fa-solid fa-note-sticky"></i></button>
 </div>
 
-<div id="boardContainer">
-    <canvas id="linesCanvas"></canvas>
-    <div id="nodeBoard"></div>
+<div id="board">
+    <canvas id="canvas"></canvas>
 </div>
 
 <script src="./graph.js"></script>
 
 <script>
-let graph;
+let graph = new Graph();
 let positions = {};
-let canvas, ctx;
 
-window.onload = function () {
-    graph = new Graph();
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
 
-    canvas = document.getElementById("linesCanvas");
-    ctx = canvas.getContext("2d");
+let mode = "select";
+let startNode = null;
+let isDrawingLine = false;
 
+/* MODOS */
+function setMode(m) {
+    mode = m;
+    startNode = null;
+    isDrawingLine = false;
+
+    document.querySelectorAll(".sidebar button").forEach(btn => btn.classList.remove("active"));
+    if (m === "select") btnSelect.classList.add("active");
+    if (m === "line") btnLine.classList.add("active");
+    if (m === "node") btnNode.classList.add("active");
+}
+
+/* CANVAS */
+function resizeCanvas() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    drawLines();
+}
+window.onload = () => {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
-
-    loadGraph();
+    setMode("select");
 };
 
-function resizeCanvas() {
-    const container = document.getElementById("boardContainer");
-    canvas.width = container.clientWidth;
-    canvas.height = container.clientHeight;
-    drawEdges();
-}
+/* CRIAR NÓ */
+document.getElementById("board").onclick = function(e) {
+    if (mode === "node" && !e.target.closest(".node")) {
 
-function addNode() {
-    const name = prompt("Nome do nó:");
+        let name = prompt("Texto:");
+        if (!name) return;
 
-    if (name && !graph.nodes[name]) {
         graph.addNode(name);
 
-        positions[name] = {
-            x: Math.random() * 400,
-            y: Math.random() * 300
-        };
+        positions[name] = { x: e.offsetX, y: e.offsetY };
 
-        updateList();
-        saveGraph();
+        updateBoard();
     }
-}
+};
 
-function connectNodes() {
-    const node1 = prompt("Primeiro nó:");
-    const node2 = prompt("Segundo nó:");
+/* UPDATE */
+function updateBoard() {
+    document.querySelectorAll(".node").forEach(n => n.remove());
 
-    if (node1 && node2 && graph.nodes[node1] && graph.nodes[node2]) {
-        graph.addEdge(node1, node2);
-        drawEdges();
-        saveGraph();
-    }
-}
-
-function updateList() {
-    const board = document.getElementById("nodeBoard");
-    board.innerHTML = "";
+    let board = document.getElementById("board");
 
     for (let node in graph.nodes) {
 
-        const div = document.createElement("div");
+        let div = document.createElement("div");
         div.className = "node";
-
-        const label = document.createElement("div");
-        label.textContent = node;
-
-        const actions = document.createElement("div");
-        actions.style.display = "none";
-
-        const editBtn = document.createElement("button");
-        editBtn.textContent = "✏️";
-        editBtn.onclick = (e) => {
-            e.stopPropagation();
-            editNodeDirect(node);
-        };
-
-        const removeBtn = document.createElement("button");
-        removeBtn.textContent = "❌";
-        removeBtn.onclick = (e) => {
-            e.stopPropagation();
-            removeNodeDirect(node);
-        };
-
-        actions.appendChild(editBtn);
-        actions.appendChild(removeBtn);
-
-        div.appendChild(label);
-        div.appendChild(actions);
+        div.textContent = node;
+        div.dataset.name = node;
 
         div.style.left = positions[node].x + "px";
         div.style.top = positions[node].y + "px";
 
-        // mostrar/esconder botões
-        div.onclick = () => {
-            actions.style.display =
-                actions.style.display === "none" ? "block" : "none";
-        };
+        /* INICIAR LIGAÇÃO */
+        div.addEventListener("mousedown", (e) => {
+            if (mode !== "line") return;
+
+            e.stopPropagation();
+            startNode = node;
+            isDrawingLine = true;
+        });
+
+        /* TERMINAR LIGAÇÃO */
+        div.addEventListener("mouseup", (e) => {
+            if (!isDrawingLine || !startNode) return;
+
+            let endNode = e.target.dataset.name;
+
+            if (startNode !== endNode) {
+                graph.addEdge(startNode, endNode);
+            }
+
+            startNode = null;
+            isDrawingLine = false;
+
+            updateBoard();
+        });
 
         makeDraggable(div, node);
         board.appendChild(div);
     }
 
-    drawEdges();
+    drawLines();
 }
 
-function makeDraggable(element, nodeName) {
+/* DRAG */
+function makeDraggable(el, node) {
     let offsetX, offsetY;
 
-    element.onmousedown = function (e) {
-        offsetX = e.clientX - element.offsetLeft;
-        offsetY = e.clientY - element.offsetTop;
+    el.onmousedown = function(e) {
+        if (mode !== "select") return;
 
-        document.onmousemove = function (e) {
-            const x = e.clientX - offsetX;
-            const y = e.clientY - offsetY;
+        offsetX = e.clientX - el.offsetLeft;
+        offsetY = e.clientY - el.offsetTop;
 
-            element.style.left = x + "px";
-            element.style.top = y + "px";
+        document.onmousemove = function(e) {
+            let x = e.clientX - offsetX;
+            let y = e.clientY - offsetY;
 
-            positions[nodeName] = { x, y };
-            drawEdges();
+            el.style.left = x + "px";
+            el.style.top = y + "px";
+
+            positions[node] = {x, y};
+            drawLines();
         };
 
-        document.onmouseup = function () {
+        document.onmouseup = function() {
             document.onmousemove = null;
-            document.onmouseup = null;
-            saveGraph();
         };
     };
 }
 
-function drawEdges() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+/* DESENHAR LINHAS */
+function drawLines() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
     for (let node in graph.nodes) {
-        for (let connection of graph.nodes[node]) {
+        for (let conn of graph.nodes[node]) {
 
-            const p1 = positions[node];
-            const p2 = positions[connection];
+            let p1 = positions[node];
+            let p2 = positions[conn];
 
             if (!p1 || !p2) continue;
 
             ctx.beginPath();
-            ctx.moveTo(p1.x + 40, p1.y + 20);
-            ctx.lineTo(p2.x + 40, p2.y + 20);
-            ctx.strokeStyle = "#333";
-            ctx.lineWidth = 2;
+            ctx.moveTo(p1.x + 60, p1.y + 30);
+            ctx.lineTo(p2.x + 60, p2.y + 30);
+
+            ctx.strokeStyle = "#4f46e5";
+            ctx.lineWidth = 3;
             ctx.stroke();
         }
     }
-}
-
-function removeNodeDirect(node) {
-    for (let n in graph.nodes) {
-        graph.nodes[n] = graph.nodes[n].filter(c => c !== node);
-    }
-
-    delete positions[node];
-    delete graph.nodes[node];
-
-    updateList();
-    drawEdges();
-    saveGraph();
-}
-
-function editNodeDirect(oldName) {
-    const newName = prompt("Novo nome:");
-
-    if (newName && !graph.nodes[newName]) {
-
-        graph.nodes[newName] = graph.nodes[oldName];
-        delete graph.nodes[oldName];
-
-        for (let node in graph.nodes) {
-            graph.nodes[node] = graph.nodes[node].map(c =>
-                c === oldName ? newName : c
-            );
-        }
-
-        positions[newName] = positions[oldName];
-        delete positions[oldName];
-
-        updateList();
-        drawEdges();
-        saveGraph();
-    }
-}
-
-function saveGraph() {
-    localStorage.setItem("graph", JSON.stringify(graph.nodes));
-    localStorage.setItem("positions", JSON.stringify(positions));
-}
-
-function loadGraph() {
-    const data = localStorage.getItem("graph");
-    const pos = localStorage.getItem("positions");
-
-    if (data) graph.nodes = JSON.parse(data);
-    if (pos) positions = JSON.parse(pos);
-
-    for (let node in graph.nodes) {
-        if (!positions[node]) {
-            positions[node] = {
-                x: Math.random() * 400,
-                y: Math.random() * 300
-            };
-        }
-    }
-
-    updateList();
 }
 </script>
 
