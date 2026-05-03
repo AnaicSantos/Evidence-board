@@ -14,9 +14,22 @@ class Graph {
             if (!this.nodes[node1].includes(node2)) {
                 this.nodes[node1].push(node2);
             }
-            if (!this.nodes[node2].includes(node1)) {
-                this.nodes[node2].push(node1);
+        }
+    }
+
+    removeNode(node) {
+        if (this.nodes[node]) {
+            delete this.nodes[node];
+
+            for (let n in this.nodes) {
+                this.nodes[n] = this.nodes[n].filter(c => c !== node);
             }
+        }
+    }
+
+    removeEdge(node1, node2) {
+        if (this.nodes[node1]) {
+            this.nodes[node1] = this.nodes[node1].filter(n => n !== node2);
         }
     }
 
