@@ -3,8 +3,6 @@
 <head>
     <title>Evidence Board</title>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
 <style>
 body {
     font-family: "Segoe UI", sans-serif;
@@ -23,26 +21,58 @@ h1 {
     left: 20px;
     top: 120px;
     background: white;
-    padding: 12px;
-    border-radius: 14px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     display: flex;
     flex-direction: column;
-    z-index: 1000;
+    gap: 10px;
+    z-index: 9999;
+}
+
+.tool {
+    position: relative;
 }
 
 .sidebar button {
-    margin: 6px 0;
-    padding: 12px;
+    width: 50px;
+    height: 50px;
     border: none;
-    background: #f1f5f9;
-    border-radius: 10px;
+    border-radius: 15px;
     cursor: pointer;
+    font-size: 20px;
+    background: #e5e7eb;
 }
 
 .sidebar button.active {
     background: #6366f1;
     color: white;
+}
+
+/* PALETA SIDEBAR */
+.sidebarPalette {
+    position: absolute;
+    left: 60px;
+    top: 0;
+    display: none;
+    gap: 5px;
+    background: white;
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* CORES */
+.color {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* cor ativa */
+.selectedColor {
+    border: 2px solid black;
 }
 
 /* BOARD */
@@ -55,23 +85,30 @@ h1 {
     position: relative;
 }
 
-/* CANVAS */
-#canvas {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-
 /* NODE */
 .node {
     position: absolute;
-    background: linear-gradient(145deg, #fde68a, #facc15);
     padding: 12px;
     border-radius: 12px;
     min-width: 100px;
     text-align: center;
     cursor: grab;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+.node:hover {
+    transform: scale(1.08);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+}
+
+/* PALETA NOTAS */
+.palette {
+    position: absolute;
+    top: -30px;
+    left: 0;
+    display: none;
+    gap: 5px;
 }
 </style>
 </head>
@@ -81,60 +118,96 @@ h1 {
 <h1>Evidence Board</h1>
 
 <div class="sidebar">
-    <button onclick="setMode('select')" id="btnSelect"><i class="fa-solid fa-arrow-pointer"></i></button>
-    <button onclick="setMode('line')" id="btnLine"><i class="fa-solid fa-diagram-project"></i></button>
-    <button onclick="setMode('node')" id="btnNode"><i class="fa-solid fa-note-sticky"></i></button>
+
+    <button onclick="setMode('select')" id="btnSelect">🖱️</button>
+    <button onclick="setMode('line')" id="btnLine">🔀</button>
+
+    <div class="tool">
+        <button onclick="setMode('node')" id="btnNode">📄</button>
+
+        <div class="sidebarPalette">
+            <div class="color selectedColor" style="background:#fde68a" onclick="setSelectedColor('#fde68a', event)"></div>
+            <div class="color" style="background:#fecaca" onclick="setSelectedColor('#fecaca', event)"></div>
+            <div class="color" style="background:#bfdbfe" onclick="setSelectedColor('#bfdbfe', event)"></div>
+            <div class="color" style="background:#bbf7d0" onclick="setSelectedColor('#bbf7d0', event)"></div>
+        </div>
+    </div>
+
 </div>
 
-<div id="board">
-    <canvas id="canvas"></canvas>
-</div>
+<div id="board"></div>
 
 <script src="./graph.js"></script>
 
 <script>
 let graph = new Graph();
 let positions = {};
+let nodeColors = {};
 
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-
+let selectedColor = "#fde68a";
 let mode = "select";
 let startNode = null;
-let isDrawingLine = false;
 
 /* MODOS */
 function setMode(m) {
     mode = m;
-    startNode = null;
-    isDrawingLine = false;
 
     document.querySelectorAll(".sidebar button").forEach(btn => btn.classList.remove("active"));
     if (m === "select") btnSelect.classList.add("active");
     if (m === "line") btnLine.classList.add("active");
     if (m === "node") btnNode.classList.add("active");
+
+    let board = document.getElementById("board");
+
+    if (mode === "select") board.style.cursor = "default";
+    if (mode === "line") board.style.cursor = "crosshair";
+    if (mode === "node") board.style.cursor = "copy";
 }
 
-/* CANVAS */
-function resizeCanvas() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-    drawLines();
+/* COR */
+function setSelectedColor(color, e) {
+    selectedColor = color;
+
+    document.querySelectorAll(".sidebarPalette .color").forEach(c => {
+        c.classList.remove("selectedColor");
+    });
+
+    e.target.classList.add("selectedColor");
 }
-window.onload = () => {
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-    setMode("select");
-};
+
+/* DELAY PALETA */
+let tool = document.querySelector(".tool");
+let paletteSidebar = document.querySelector(".sidebarPalette");
+let timeoutSidebar;
+
+tool.addEventListener("mouseenter", () => {
+    clearTimeout(timeoutSidebar);
+    paletteSidebar.style.display = "flex";
+});
+
+tool.addEventListener("mouseleave", () => {
+    timeoutSidebar = setTimeout(() => {
+        paletteSidebar.style.display = "none";
+    }, 300);
+});
+
+paletteSidebar.addEventListener("mouseenter", () => {
+    clearTimeout(timeoutSidebar);
+});
+
+paletteSidebar.addEventListener("mouseleave", () => {
+    paletteSidebar.style.display = "none";
+});
 
 /* CRIAR NÓ */
 document.getElementById("board").onclick = function(e) {
-    if (mode === "node" && !e.target.closest(".node")) {
+    if (mode === "node") {
 
-        let name = prompt("Texto:");
+        let name = prompt("Texto da nota:");
         if (!name) return;
 
         graph.addNode(name);
+        nodeColors[name] = selectedColor;
 
         positions[name] = { x: e.offsetX, y: e.offsetY };
 
@@ -153,90 +226,87 @@ function updateBoard() {
         let div = document.createElement("div");
         div.className = "node";
         div.textContent = node;
-        div.dataset.name = node;
 
+        div.style.background = nodeColors[node];
         div.style.left = positions[node].x + "px";
         div.style.top = positions[node].y + "px";
 
-        /* INICIAR LIGAÇÃO */
-        div.addEventListener("mousedown", (e) => {
-            if (mode !== "line") return;
+        /* PALETA NOTA */
+        let palette = document.createElement("div");
+        palette.className = "palette";
 
-            e.stopPropagation();
-            startNode = node;
-            isDrawingLine = true;
+        ["#fde68a","#fecaca","#bfdbfe","#bbf7d0"].forEach(color => {
+            let c = document.createElement("div");
+            c.className = "color";
+            c.style.background = color;
+
+            c.onclick = (e) => {
+                e.stopPropagation();
+                nodeColors[node] = color;
+                updateBoard();
+            };
+
+            palette.appendChild(c);
         });
 
-        /* TERMINAR LIGAÇÃO */
-        div.addEventListener("mouseup", (e) => {
-            if (!isDrawingLine || !startNode) return;
+        div.appendChild(palette);
 
-            let endNode = e.target.dataset.name;
+        /* HOVER FIX */
+        let timeout;
 
-            if (startNode !== endNode) {
-                graph.addEdge(startNode, endNode);
+        div.addEventListener("mouseenter", () => {
+            clearTimeout(timeout);
+            palette.style.display = "flex";
+        });
+
+        div.addEventListener("mouseleave", () => {
+            timeout = setTimeout(() => {
+                palette.style.display = "none";
+            }, 300);
+        });
+
+        palette.addEventListener("mouseenter", () => {
+            clearTimeout(timeout);
+        });
+
+        palette.addEventListener("mouseleave", () => {
+            palette.style.display = "none";
+        });
+
+        /* DRAG + LIGAÇÃO */
+        div.onmousedown = function(e) {
+            if (mode === "select") {
+                let offsetX = e.clientX - div.offsetLeft;
+                let offsetY = e.clientY - div.offsetTop;
+
+                document.onmousemove = function(e) {
+                    let x = e.clientX - offsetX;
+                    let y = e.clientY - offsetY;
+
+                    div.style.left = x + "px";
+                    div.style.top = y + "px";
+
+                    positions[node] = {x, y};
+                };
+
+                document.onmouseup = function() {
+                    document.onmousemove = null;
+                };
+            } else if (mode === "line") {
+                startNode = node;
+                div.style.outline = "3px solid #6366f1";
             }
+        };
 
-            startNode = null;
-            isDrawingLine = false;
+        div.onmouseup = function() {
+            if (mode === "line" && startNode && startNode !== node) {
+                graph.addEdge(startNode, node);
+                startNode = null;
+                updateBoard();
+            }
+        };
 
-            updateBoard();
-        });
-
-        makeDraggable(div, node);
         board.appendChild(div);
-    }
-
-    drawLines();
-}
-
-/* DRAG */
-function makeDraggable(el, node) {
-    let offsetX, offsetY;
-
-    el.onmousedown = function(e) {
-        if (mode !== "select") return;
-
-        offsetX = e.clientX - el.offsetLeft;
-        offsetY = e.clientY - el.offsetTop;
-
-        document.onmousemove = function(e) {
-            let x = e.clientX - offsetX;
-            let y = e.clientY - offsetY;
-
-            el.style.left = x + "px";
-            el.style.top = y + "px";
-
-            positions[node] = {x, y};
-            drawLines();
-        };
-
-        document.onmouseup = function() {
-            document.onmousemove = null;
-        };
-    };
-}
-
-/* DESENHAR LINHAS */
-function drawLines() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    for (let node in graph.nodes) {
-        for (let conn of graph.nodes[node]) {
-
-            let p1 = positions[node];
-            let p2 = positions[conn];
-
-            if (!p1 || !p2) continue;
-
-            ctx.beginPath();
-            ctx.moveTo(p1.x + 60, p1.y + 30);
-            ctx.lineTo(p2.x + 60, p2.y + 30);
-
-            ctx.strokeStyle = "#4f46e5";
-            ctx.lineWidth = 3;
-            ctx.stroke();
-        }
     }
 }
 </script>
